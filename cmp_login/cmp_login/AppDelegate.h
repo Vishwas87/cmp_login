@@ -7,9 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "cmp_login_view.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
-
+{
+    UIWindow *window;
+    cmp_login_view *viewController;
+    
+}
 @property (strong, nonatomic) UIWindow *window;
+@property (strong,nonatomic)cmp_login_view *viewController;
 
 @end

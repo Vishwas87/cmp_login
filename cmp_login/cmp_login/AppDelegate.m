@@ -9,12 +9,22 @@
 #import "AppDelegate.h"
 
 @implementation AppDelegate
+@synthesize  window,viewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
     // Override point for customization after application launch.
+    self.viewController = [[cmp_login_view alloc]initWithNibName:@"cmp_login_view" bundle:NULL];
+    
+    
     self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = self.viewController;
+    
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
