@@ -18,7 +18,7 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     // Override point for customization after application launch.
-    self.viewController = [[cmp_login_view alloc]initWithNibName:@"cmp_login_view" bundle:NULL];
+    self.viewController = [[cmp_login_view alloc]initWithNibName:@"cmp_login_view" bundle:NULL andSpotsUrl:@"http://localhost:8888/" andLoginUrl:@"http://localhost:8888/"];
     
     
     self.window.backgroundColor = [UIColor whiteColor];

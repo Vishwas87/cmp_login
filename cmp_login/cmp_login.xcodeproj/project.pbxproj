@@ -19,6 +19,7 @@
 		4D3F53441811AFBA00A573B0 /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D3F53431811AFBA00A573B0 /* button.png */; };
 		4D3F53461811B6ED00A573B0 /* KeyIos.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D3F53451811B6ED00A573B0 /* KeyIos.png */; };
 		4D3F53481811B9EF00A573B0 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D3F53471811B9EF00A573B0 /* close.png */; };
+		4D3F53521813E1E200A573B0 /* connect_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 4D3F53511813E1E200A573B0 /* connect_btn.png */; };
 		4DBEFFC6180FF28C008AA462 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBEFFC5180FF28C008AA462 /* Foundation.framework */; };
 		4DBEFFC8180FF28C008AA462 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBEFFC7180FF28C008AA462 /* CoreGraphics.framework */; };
 		4DBEFFCA180FF28C008AA462 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBEFFC9180FF28C008AA462 /* UIKit.framework */; };
@@ -58,6 +59,8 @@
 		4D3F53431811AFBA00A573B0 /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button.png; sourceTree = "<group>"; };
 		4D3F53451811B6ED00A573B0 /* KeyIos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = KeyIos.png; sourceTree = "<group>"; };
 		4D3F53471811B9EF00A573B0 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
+		4D3F53511813E1E200A573B0 /* connect_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connect_btn.png; sourceTree = "<group>"; };
+		4D3F53541813F4A100A573B0 /* MACRO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACRO.h; sourceTree = "<group>"; };
 		4DBEFFC2180FF28C008AA462 /* cmp_login.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cmp_login.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DBEFFC5180FF28C008AA462 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4DBEFFC7180FF28C008AA462 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -111,6 +114,7 @@
 			children = (
 				4D1EDCB918113BAA00A782D1 /* Images */,
 				4D11F66A18111ED200B889DC /* Icons */,
+				4D3F53541813F4A100A573B0 /* MACRO.h */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -135,6 +139,7 @@
 				4D1EDCD71811ABA600A782D1 /* login_background.png */,
 				4D3F53431811AFBA00A573B0 /* button.png */,
 				4D3F53471811B9EF00A573B0 /* close.png */,
+				4D3F53511813E1E200A573B0 /* connect_btn.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -312,6 +317,7 @@
 				4D1EDCD21811636700A782D1 /* bench.png in Resources */,
 				4D3F53441811AFBA00A573B0 /* button.png in Resources */,
 				4D3F53461811B6ED00A573B0 /* KeyIos.png in Resources */,
+				4D3F53521813E1E200A573B0 /* connect_btn.png in Resources */,
 				4DBEFFD0180FF28C008AA462 /* InfoPlist.strings in Resources */,
 				4D1EDCD4181164E100A782D1 /* pictureframe.png in Resources */,
 				4D1EDCD0181162D900A782D1 /* background.png in Resources */,

@@ -8,14 +8,20 @@
 
 #import "cmp_login_view.h"
 
-@interface cmp_login_view ()
 
+
+@interface cmp_login_view ()
+ - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 @end
 
 @implementation cmp_login_view
 
+@synthesize delegate;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
+    if(loginUrl == NULL || spotsUrl == NULL) return NULL;
+    
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -29,6 +35,24 @@
     return self;
 }
 
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andSpotsUrl:(NSString*)urlSpots andLoginUrl:(NSString*)urlLogin
+{
+    
+    if([NSURL URLWithString:urlLogin] == NULL) return NULL; //Se non è stato passato un url corretto per il loginritorna un oggetto NULL;
+    
+    else
+    {
+        loginUrl = urlLogin;
+        spotsUrl = urlSpots;
+        return [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    }
+    
+}
+
+
+
 - (IBAction)showingLogin
 {
     
@@ -36,14 +60,14 @@
         
         if([mask superview] == NULL){
             [self.view addSubview:mask];
-            [self.view addSubview:self.loginView];
+            [self.view addSubview:loginView];
         }
         
     } completion:^(BOOL finished) {
         
         [UIView animateWithDuration:1.0 animations:^{
             [mask setAlpha:1.0];
-            [self.loginView setAlpha:1.0];
+            [loginView setAlpha:1.0];
 
         } completion:^(BOOL finished) {
             
@@ -58,49 +82,69 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //Inizializzazione
+    
+    
+    
+    
+    
+    
+    
+    
+    //Inizializzazione della maschera per il modale
     mask = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height)];
     
     [mask setBackgroundColor:[UIColor grayColor]];
     
-    self.loginView.frame = CGRectMake((self.view.frame.size.width/2) - (self.loginView.frame.size.width/2), (self.view.frame.size.height/2) - (self.loginView.frame.size.height/2) - 50, self.loginView.frame.size.width, self.loginView.frame.size.height);
+    //Inizializzazione per la finestra di login
+    loginView.frame = CGRectMake((self.view.frame.size.width/2) - (loginView.frame.size.width/2), (self.view.frame.size.height/2) - (loginView.frame.size.height/2) - 50, loginView.frame.size.width, loginView.frame.size.height);
     
-    CALayer * loginBorder = [self.loginView layer];
+    CALayer * loginBorder = [loginView layer];
     [loginBorder setMasksToBounds:YES];
     [loginBorder setCornerRadius:10];
+    [loginBorder setBorderWidth:1.0];
+    [loginBorder setBorderColor:[[UIColor whiteColor]CGColor]];
     [mask setAlpha:0.0];
-    [self.loginView setAlpha:0.0];
+    [loginView setAlpha:0.0];
     
    
-
+    //Inizializzazione della notification view
+    
+    CALayer *notificationLayer = [notificationView layer];
+    [notificationLayer setMasksToBounds:YES];
+    [notificationLayer setCornerRadius:10.0];
+ 
+    [notificationView setBackgroundColor:NORMALSTATUS];
+    [notificationText setText:NSLocalizedString(@"INSERT CREDENTIALS", NULL)];
     
     
     
     
     
-    NSURL *url = [NSURL URLWithString:@"http://localhost:8888/"];
+    
+    
+    
+    
+    
+    NSURL *url = [NSURL URLWithString:spotsUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
+
+    
     AFHTTPRequestOperation * operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         number_images = [responseObject count];
         if([responseObject count]>0){
-     
-            //Creazione della maschera del modale
+          [scroll setContentSize:CGSizeMake((scroll.frame.size.width) * [responseObject count], scroll.frame.size.height)];
             
-
-            
-            
-            
-            [self.scroll setContentSize:CGSizeMake((self.scroll.frame.size.width) * [responseObject count], self.scroll.frame.size.height)];
-            
-            [responseObject enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+          [responseObject enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 [urls insertObject:obj atIndex:idx];
 
                 NSURL *ul = [[NSURL alloc] initWithString:[urls objectAtIndex:idx]];
-                UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake((self.scroll.frame.size.width ) * idx, 0, self.scroll.frame.size.width  , self.scroll.frame.size.height )];
+                UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake((scroll.frame.size.width ) * idx, 0, scroll.frame.size.width  , scroll.frame.size.height )];
                 
                 [images insertObject:img atIndex:idx];
                 [img setImageWithURL:ul placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
@@ -112,9 +156,9 @@
                 
                 
                 
-                self.scroll.center = self.framePicture.center;
+                scroll.center = framePicture.center;
                 
-                [self.scroll addSubview:img];
+                [scroll addSubview:img];
                 
                 
                 
@@ -137,7 +181,7 @@
 -(void)scrollViewDidScroll:(UIScrollView*)scrollView
 {
 	const CGFloat currPos = scrollView.contentOffset.x;
-	const NSInteger selectedPage = lroundf(currPos / self.scroll.frame.size.width);
+	const NSInteger selectedPage = lroundf(currPos / scroll.frame.size.width);
 	const NSInteger zone = 1 + (selectedPage % 3);
 	const NSInteger nextPage = selectedPage + 1;
 	const NSInteger prevPage = selectedPage - 1;
@@ -213,7 +257,7 @@
     [UIView animateWithDuration:1.0 animations:^{
         
             [mask setAlpha:0];
-            [self.loginView setAlpha:0];
+            [loginView setAlpha:0];
         
     } completion:^(BOOL finished) {
         
