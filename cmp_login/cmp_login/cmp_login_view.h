@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <AFHTTPRequestOperation.h>
+#import <AFHTTPRequestOperationManager.h>
 #import <AFNetworkReachabilityManager.h>
 #import <UIImageView+AFNetworking.h>
 
 
-@protocol cmp_login_protocol
+@protocol cmp_login_protocol<NSObject>
 
--(void)loginSuccess:(id)response; //Method executed after a succeful login
+-(void)loginSuccess:(NSMutableDictionary*)response; //Method executed after a succeful login
 -(void)loginError:(id)errorStatus; //Method executed after a failed login
 
 
@@ -39,6 +40,10 @@
     IBOutlet UIPageControl *pageControll;
     IBOutlet UIView *notificationView;
     IBOutlet UILabel *notificationText;
+    IBOutlet UITextField *username;
+    IBOutlet UITextField *password;
+    
+    
     
     NSString *spotsUrl; //Url per il download delle immagini
     NSString *loginUrl; //Url per il corretto Logins

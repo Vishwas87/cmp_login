@@ -84,12 +84,6 @@
     [super viewDidLoad];
     
     
-    
-    
-    
-    
-    
-    
     //Inizializzazione della maschera per il modale
     mask = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height)];
     
@@ -115,13 +109,6 @@
  
     [notificationView setBackgroundColor:NORMALSTATUS];
     [notificationText setText:NSLocalizedString(@"INSERT CREDENTIALS", NULL)];
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -182,34 +169,7 @@
 {
 	const CGFloat currPos = scrollView.contentOffset.x;
 	const NSInteger selectedPage = lroundf(currPos / scroll.frame.size.width);
-	const NSInteger zone = 1 + (selectedPage % 3);
-	const NSInteger nextPage = selectedPage + 1;
-	const NSInteger prevPage = selectedPage - 1;
-	/// Next page
-    
-	if (nextPage < number_images)
-	{
-		NSInteger nextViewTag = zone + 1;
-		if (nextViewTag == 4)
-			nextViewTag = 1;
-		UIImageView* nextView = (UIImageView*)[scrollView viewWithTag:nextViewTag];
-		nextView.frame = CGRectMake(nextPage * 300, 0, 300, 400);
-		NSString *str = [NSString stringWithFormat:@"tiger%d.jpg", nextPage];
-		UIImage* img = [UIImage imageNamed:str];
-		nextView.image = img;
-	}
-	/// Prev page
-	if (prevPage >= 0)
-	{
-		NSInteger prevViewTag = zone - 1;
-		if (!prevViewTag)
-			prevViewTag = 3;
-		UIImageView* prevView = (UIImageView*)[scrollView viewWithTag:prevViewTag];
-		prevView.frame = (CGRect){.origin.x = prevPage * 300, .origin.y = 0.0f, .size = prevView.frame.size};
-		NSString *str = [NSString stringWithFormat:@"tiger%d.jpg", prevPage];
-		UIImage* img = [UIImage imageNamed:str];
-		prevView.image = img;
-	}
+
 }
 
 
@@ -274,6 +234,84 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+
+
+#pragma login authentication
+
+
+-(IBAction)signIn:(id)sender
+{
+    //Controllo su entrambi i campi (user e pwd)
+    NSString *us = [[username text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    NSString *pwd =[[password text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    
+    if([us length]>0 &&
+       [pwd length]>0)
+    {
+        //Prova la connessione
+        
+
+        
+        
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        NSDictionary *parameters = @{@"username": us,
+                                    @"password": pwd
+                                     };
+        [manager POST:loginUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            if([responseObject objectForKey:@"RETURNCODE"] != Nil && [[responseObject objectForKey:@"RETURNCODE"]  isEqual: @"0"]){
+                
+                if(self.delegate != Nil &&
+                   [delegate respondsToSelector:@selector(loginSuccess:)]){
+                    
+                    [self.delegate loginSuccess:responseObject];
+                }
+                
+            }
+            else{
+            
+                if([responseObject objectForKey:@"RETURNCODE"] != Nil && [[responseObject objectForKey:@"RETURNCODE"]  isEqual: @"-1"])
+                {
+                    //credenziali errate
+                    UIAlertView *errorMessage = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"WRONG CREDENTIALS", NULL) message:NSLocalizedString(@"WRONG CREDENTIALS", NULL) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    
+                    [errorMessage show];
+                }
+                else{
+                    //Generico errore
+                    if(self.delegate != Nil &&
+                       [delegate respondsToSelector:@selector(loginError:)]){
+                        
+                        [self.delegate loginError:responseObject];
+                    }
+                }
+            
+            }
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            UIAlertView *errorMessage = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"NETWORK ERROR", NULL) message:NSLocalizedString(@"NETWORK ERROR MESSAGE", NULL) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            
+            [errorMessage show];
+        }];
+        
+        
+        
+        
+    }
+    else{
+        UIAlertView *errorMessage = [[UIAlertView alloc]initWithTitle:NSLocalizedString(@"CREDENTIALS VOID", NULL) message:NSLocalizedString(@"CREDENTIALS REQUIRED", NULL) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        
+        [errorMessage show];
+    }
+    
+    
+    
 }
 
 @end
